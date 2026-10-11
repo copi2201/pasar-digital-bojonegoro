@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pasar Digital Bojonegoro — Prototype YELP GenBI 2026</title>
+<meta name="description" content="Prototype interaktif YELP GenBI 2026: Peta Jangkauan QRIS, pendampingan pasar, jalur rujukan KUR bertahap, Digital Market, dan evaluasi pilot untuk Bojonegoro.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0A2A5E;--ink:#12264D;--blue:#1F5FAE;--sky:#EAF2FB;--gold:#C8A24A;--gold-l:#F6EBCB;--red:#D0554B;--amb:#E2B440;--muted:#5C6F8C;--line:#D8E3F1;--card:#fff;--r:18px}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:var(--ink);line-height:1.55;background:linear-gradient(135deg,#FAFCFF 0%,#E9F1FB 60%,#F6EFD9 140%) fixed;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:8px}
+.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+aside{background:linear-gradient(180deg,#0A2A5E,#0D3470 70%,#123E86);color:#fff;padding:26px 18px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:26px}
+.brand b{font-family:'Source Serif 4',Georgia,serif;font-size:21px;line-height:1.2;display:block}
+.brand span{font-size:12px;color:#B8CBEA}
+.brand:after{content:"";display:block;width:46px;height:3px;border-radius:9px;background:var(--gold);margin-top:14px}
+nav{display:grid;gap:4px}
+nav button{border:0;background:none;color:#C9D8F0;text-align:left;padding:11px 14px;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer;transition:.2s}
+nav button:hover{background:rgba(255,255,255,.08);color:#fff}
+nav button[aria-selected=true]{background:#fff;color:var(--navy)}
+.side-note{margin-top:auto;font-size:12px;color:#B8CBEA;border-top:1px solid rgba(255,255,255,.15);padding-top:14px}
+main{padding:28px 34px 60px;min-width:0}
+.cover{position:relative;overflow:hidden;border-radius:24px;padding:34px 36px;background:linear-gradient(120deg,#fff 30%,#DCEAF9);border:1px solid var(--line);margin-bottom:26px}
+.cover svg{position:absolute;right:-20px;bottom:-10px;width:55%;height:120%;opacity:.9;pointer-events:none}
+.cover>div{position:relative;max-width:560px}
+h1{font-family:'Source Serif 4',Georgia,serif;font-size:clamp(28px,4vw,44px);line-height:1.1;color:var(--navy);letter-spacing:-.01em}
+.sub{font-family:'Source Serif 4',Georgia,serif;font-weight:700;color:var(--blue);font-size:clamp(18px,2.4vw,24px);margin-top:8px}
+.quote{font-family:'Source Serif 4',Georgia,serif;font-style:italic;color:var(--ink);margin-top:10px;font-size:16px}
+h2{font-family:'Source Serif 4',Georgia,serif;font-size:27px;color:var(--navy)}
+.lead{color:var(--muted);max-width:46em;margin:6px 0 20px}
+section[hidden]{display:none}
+.grid{display:grid;grid-template-columns:1.6fr 1fr;gap:18px;align-items:start}
+.stack{display:grid;gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:0 8px 24px -16px rgba(10,42,94,.35)}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.card h3{font-size:18px;font-weight:700;color:var(--navy)}
+.card .d{font-size:14px;color:var(--muted)}
+.tag{font-size:11px;font-weight:800;letter-spacing:.04em;background:var(--sky);color:var(--blue);padding:6px 12px;border-radius:99px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+select{border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:#fff;cursor:pointer}
+.mapbox{background:linear-gradient(180deg,#F4F8FD,#EAF2FB);border:1px solid var(--line);border-radius:16px;padding:14px}
+.lg{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-bottom:6px}
+.lg i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+svg.map{width:100%;height:auto;display:block}
+.cell{cursor:pointer;stroke:#fff;stroke-width:.5;stroke-linejoin:round;transition:opacity .25s,filter .15s}
+.cell:hover{filter:brightness(1.1)}
+.cell.sel{stroke:var(--navy);stroke-width:1}
+.lbl{font-size:1.6px;font-weight:700;text-anchor:middle;pointer-events:none;paint-order:stroke;stroke-width:.25px}
+.foot{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:8px}
+.big{font-family:'Source Serif 4',Georgia,serif;font-size:42px;font-weight:700;color:var(--blue);line-height:1}
+.bar{height:9px;background:#E6EDF7;border-radius:99px;overflow:hidden;margin-top:7px}
+.bar i{display:block;height:100%;border-radius:99px;transition:width .45s}
+.rw{display:flex;justify-content:space-between;font-size:14.5px;margin-top:14px}
+.rw b{font-weight:700}
+.pill{display:inline-block;padding:4px 11px;border-radius:99px;font-size:12px;font-weight:700}
+.p-r{background:#FBE4E1;color:#9B2C22}.p-a{background:var(--gold-l);color:#7A5A0E}.p-g{background:var(--sky);color:var(--blue)}
+.note{font-size:12.5px;color:var(--muted);margin-top:14px}
+.btn{border:0;border-radius:12px;padding:10px 16px;font-weight:700;font-size:14px;cursor:pointer;background:var(--navy);color:#fff;transition:.15s}
+.btn:hover{background:var(--blue)}.btn.sec{background:var(--sky);color:var(--blue)}.btn.sec:hover{background:#d6e6f8}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff}
+.trader{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.trader:last-child{border:0}.trader small{color:var(--muted);display:block;font-size:13px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.step{display:grid;grid-template-columns:38px 1fr;gap:14px;padding:16px;border:1px solid var(--line);border-radius:14px;margin-bottom:12px;transition:.3s}
+.step .dot{width:38px;height:38px;border-radius:50%;background:#E6EDF7;display:grid;place-items:center;font-weight:800;color:var(--muted)}
+.step.on{border-color:var(--blue);background:var(--sky)}.step.on .dot{background:var(--blue);color:#fff}
+.step p{font-size:14px;color:var(--muted)}
+.chk{display:flex;gap:10px;font-size:14px;margin:12px 0;cursor:pointer}
+.chk input{margin-top:4px;accent-color:var(--blue);width:17px;height:17px}
+label{font-size:13px;font-weight:600;color:var(--muted);display:block;margin-bottom:6px}
+input[type=range]{width:100%;accent-color:var(--blue)}
+.warn{background:var(--gold-l);color:#6B4E0A;border-radius:14px;padding:13px 16px;font-size:14px;margin-top:14px}
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:16px}
+.prod{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.thumb{height:100px;display:grid;place-items:center;background:var(--sky)}.thumb svg{width:42px;height:42px}
+.prod .b{padding:14px 16px 16px;display:flex;flex-direction:column;gap:4px;flex:1}.prod small{color:var(--muted)}
+.prod .pr{font-weight:800;margin-top:auto;padding-top:8px;color:var(--navy)}
+.bars{display:flex;align-items:flex-end;gap:10px;height:150px;margin-top:14px}
+.bars div{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.bars i{width:100%;background:linear-gradient(180deg,#4A8AD4,var(--navy));border-radius:9px 9px 4px 4px;transition:height .4s}
+.tg{display:flex;justify-content:space-between;font-size:14px;font-weight:600;margin-top:14px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,30px);background:var(--navy);color:#fff;padding:12px 20px;border-radius:14px;font-size:14px;opacity:0;pointer-events:none;transition:.3s;z-index:50;max-width:90vw}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+footer{margin-top:40px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+@media(max-width:900px){.app{grid-template-columns:1fr}aside{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:14px 16px;gap:10px}.brand:after,.side-note{display:none}nav{display:flex;overflow-x:auto;width:100%}nav button{white-space:nowrap}main{padding:18px 16px 50px}.grid{grid-template-columns:1fr}.cover{padding:24px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <div class="brand"><b>Pasar Digital Bojonegoro</b><span>Prototype YELP GenBI 2026</span></div>
+  <nav role="tablist" id="tabs" aria-label="Menu">
+    <button role="tab" data-t="peta" aria-selected="true">Peta Jangkauan QRIS</button>
+    <button role="tab" data-t="pasar" aria-selected="false">Pasar &amp; Retribusi</button>
+    <button role="tab" data-t="kur" aria-selected="false">Jalur KUR</button>
+    <button role="tab" data-t="market" aria-selected="false">Digital Market</button>
+    <button role="tab" data-t="eval" aria-selected="false">Evaluasi Pilot</button>
+  </nav>
+  <div class="side-note">Subtema: Ekonomi Digital untuk Pertumbuhan Inklusif. Seluruh angka adalah simulasi.</div>
+</aside>
+<main>
+  <div class="cover">
+    <svg viewBox="0 0 400 220" fill="none" aria-hidden="true"><path d="M0 200C90 210 160 130 230 110S350 60 400 10" stroke="#C8A24A" stroke-width="2.5"/><path d="M0 215C100 225 180 150 250 130S360 85 400 40" stroke="#C8A24A" stroke-width="1.2" opacity=".6"/><g fill="#1F5FAE" opacity=".18"><rect x="290" y="130" width="22" height="70" rx="4"/><rect x="322" y="100" width="22" height="100" rx="4"/><rect x="354" y="60" width="22" height="140" rx="4"/></g></svg>
+    <div><h1>Satu pesan: digitalisasi diukur dari manfaatnya.</h1><div class="sub">Pasar, peta, dan rujukan KUR bertahap</div><div class="quote">Dari pasar, QRIS menjadi jalan menuju usaha yang lebih kuat.</div></div>
+  </div>
+
+  <section id="peta">
+    <div class="grid">
+      <div class="stack">
+        <div class="card">
+          <div class="head"><div><h3>Peta Jangkauan QRIS</h3><div class="d">Pilih kecamatan untuk melihat indikator dan kebutuhan pendampingan.</div></div><span class="tag">SIMULASI</span></div>
+          <div class="filters"><select id="sek" aria-label="Sektor usaha"></select><select id="pri" aria-label="Prioritas"><option value="">Semua prioritas</option><option value="h">Prioritas tinggi</option><option value="m">Prioritas sedang</option><option value="g">Cakupan tinggi</option></select></div>
+          <div class="mapbox">
+            <div class="lg"><span><i style="background:var(--red)"></i>Rendah (&lt;45%)</span><span><i style="background:var(--amb)"></i>Sedang (45–64%)</span><span><i style="background:var(--blue)"></i>Tinggi (≥65%)</span></div>
+            <svg class="map" id="map" viewBox="-2 -2 104 56" role="img" aria-label="Peta skematik 28 kecamatan Bojonegoro"></svg>
+            <div class="foot"><span>28 area ilustratif · bentuk tidak berskala</span><span>Data contoh untuk demo</span></div>
+          </div>
+        </div>
+        <div class="card" id="detail" aria-live="polite"></div>
+      </div>
+      <div class="stack">
+        <div class="card"><div class="head"><div><h3>Ringkasan cakupan</h3><div class="d">Distribusi status wilayah</div></div><span class="tag">SIMULASI</span></div><div id="sum"></div><p class="note">Klasifikasi final perlu dihitung dari rasio merchant QRIS aktif terhadap jumlah usaha di setiap kecamatan.</p></div>
+        <div class="card"><h3>Indikator dampak</h3><div class="d">Yang perlu diukur selama pilot (atur di menu Evaluasi Pilot)</div><div id="imp"></div><p class="note">Angka target adalah usulan prototype, bukan hasil program aktual.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pasar" hidden>
+    <h2>Pasar sebagai pintu masuk</h2>
+    <p class="lead">Petugas menagih retribusi lewat QRIS sambil membantu pedagang membuka QRIS untuk menerima pembayaran pembeli. Coba di satu pasar contoh.</p>
+    <div class="grid">
+      <div class="card"><h3>Pasar contoh (6 pedagang)</h3><div id="traders"></div></div>
+      <div class="card"><h3>Hasil hari ini</h3>
+        <div class="rw"><span><b id="m1">0</b> / 6 retribusi dibayar digital</span></div><div class="bar"><i id="b1" style="width:0;background:var(--blue)"></i></div>
+        <div class="rw"><span><b id="m2">0</b> / 6 pedagang QRIS aktif</span></div><div class="bar"><i id="b2" style="width:0;background:var(--gold)"></i></div>
+        <div class="warn">BI menerapkan MDR 0% bagi usaha mikro untuk transaksi hingga Rp500.000, sehingga biaya bagi pedagang kecil ringan.</div>
+        <button class="btn sec" id="rst" style="margin-top:16px">Ulangi simulasi</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="kur" hidden>
+    <h2>Jalur rujukan KUR yang bertahap</h2>
+    <p class="lead">Karena menyangkut utang, urutannya disengaja: pembayaran dan pendampingan dulu, rujukan setelah catatan transaksi cukup panjang dan atas persetujuan pelaku usaha. Keputusan kredit tetap di bank.</p>
+    <div class="grid">
+      <div class="card" id="steps"></div>
+      <div class="card"><h3>Atur kondisi pelaku usaha</h3>
+        <div style="margin-top:14px"><label for="mo">Lama catatan transaksi QRIS: <b id="mov">0</b> bulan</label><input type="range" id="mo" min="0" max="12" value="0"></div>
+        <label class="chk"><input type="checkbox" id="cs"><span>Pelaku usaha menyetujui datanya dibagikan ke bank penyalur KUR</span></label>
+        <label class="chk"><input type="checkbox" id="un"><span>Pendamping memastikan pelaku usaha paham kewajiban kredit</span></label>
+        <div id="kstat" class="warn"></div>
+        <p class="note">Ambang 6 bulan adalah asumsi prototype; praktiknya ditentukan bersama bank penyalur.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="market" hidden>
+    <h2>Digital Market</h2>
+    <p class="lead">Katalog digital agar produk UMKM mudah ditemukan: ada produk, harga, lokasi usaha, dan cara memesan. Produk di bawah hanya contoh.</p>
+    <div class="head" style="align-items:center"><div class="chips" id="cats"></div><button class="btn" id="cartb">Keranjang pesanan: 0</button></div>
+    <div class="products" id="prods"></div>
+  </section>
+
+  <section id="eval" hidden>
+    <h2>Evaluasi pilot 6 bulan</h2>
+    <p class="lead">Jumlah pengguna hanya menunjukkan jangkauan. Yang diukur adalah apakah pedagang tetap memakai QRIS dan usahanya berubah. Geser angka untuk membaca pilot terhadap target usulan.</p>
+    <div class="grid">
+      <div class="card">
+        <label for="e1">UMKM didampingi: <b id="e1v"></b> (target ≥100)</label><input type="range" id="e1" min="0" max="200" value="100">
+        <div style="margin-top:14px"><label for="e2">UMKM ikut promosi digital: <b id="e2v"></b> (target ≥50)</label><input type="range" id="e2" min="0" max="200" value="50"></div>
+        <div style="margin-top:14px"><label for="e3">Masih aktif memakai QRIS di bulan ke-6: <b id="e3v"></b>% (target ≥70%)</label><input type="range" id="e3" min="0" max="100" value="70"></div>
+        <h3 style="margin-top:22px">Peserta aktif QRIS per bulan</h3><div class="bars" id="bars"></div>
+      </div>
+      <div class="card"><h3>Keluaran vs hasil</h3>
+        <div class="tg"><span>Pendampingan</span><span id="s1"></span></div><div class="tg"><span>Promosi digital</span><span id="s2"></span></div><div class="tg"><span>Keberlanjutan QRIS</span><span id="s3"></span></div>
+        <h3 style="margin-top:22px">Indikator hasil usaha</h3><p class="d" style="margin:4px 0 10px">Dicatat sebelum dan sesudah, per usaha peserta:</p>
+        <div class="chips"><span class="pill p-g">Pencatatan keuangan</span><span class="pill p-g">Jangkauan pelanggan</span><span class="pill p-g">Perubahan omzet</span></div>
+        <div class="warn">Target adalah usulan, bukan capaian aktual Bojonegoro. Omzet perlu dibaca hati-hati karena musim panen, harga, dan permintaan juga memengaruhinya.</div>
+      </div>
+    </div>
+  </section>
+  <footer>Data kecamatan, pedagang, dan produk adalah ilustrasi; jumlah usaha disesuaikan dengan 91.751 pelaku UMKM Bojonegoro yang dikutip artikel. Peta hanya memuat data agregat; data per pelaku usaha tidak pernah ditampilkan.</footer>
+</main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const $=s=>document.querySelector(s),fmt=n=>n.toLocaleString('id-ID'),fr=x=>x-Math.floor(x),cl=(v,a,b)=>Math.max(a,Math.min(b,v));
+const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('show'),2400)};
+
+/* Tabs */
+const tabs=[...document.querySelectorAll('#tabs button')];
+function go(id){tabs.forEach(b=>b.setAttribute('aria-selected',b.dataset.t===id));document.querySelectorAll('main>section').forEach(s=>s.hidden=s.id!==id);try{history.replaceState(null,'','#'+id)}catch(e){}if(id=='peta')drawImp()}
+tabs.forEach(b=>b.onclick=()=>go(b.dataset.t));
+try{const h=location.hash.slice(1);if(tabs.some(b=>b.dataset.t===h))go(h)}catch(e){}
+
+/* Peta poligon (diagram Voronoi skematik) */
+const PT=[['Kedewan',10,14],['Padangan',6,25],['Kasiman',15,31],['Purwosari',17,20],['Margomulyo',6,40],['Ngraho',15,43],['Tambakrejo',24,41],['Ngasem',26,25],['Malo',31,12],['Gayam',22,8],['Kalitidu',36,21],['Dander',41,33],['Bubulan',33,47],['Ngambon',30,36],['Sekar',40,46],['Gondang',48,44],['Temayang',55,40],['Sugihwaras',56,28],['Bojonegoro',49,22],['Kapas',58,17],['Trucuk',64,9],['Sukosewu',67,23],['Balen',72,14],['Sumberrejo',77,25],['Kanor',85,15],['Baureno',91,25],['Kepohbaru',80,37],['Kedungadem',66,40]];
+const BND=[[2,20],[14,3],[45,1],[80,4],[98,16],[98,30],[88,42],[60,50],[30,52],[8,48],[0,36]];
+const clip=(P,a,b,c)=>{const o=[];P.forEach((p,i)=>{const q=P[(i+1)%P.length],fp=a*p[0]+b*p[1]-c,fq=a*q[0]+b*q[1]-c;if(fp<=0)o.push(p);if(fp*fq<0){const t=fp/(fp-fq);o.push([p[0]+(q[0]-p[0])*t,p[1]+(q[1]-p[1])*t])}});return o};
+const CELLS=PT.map((s,i)=>{let P=BND;PT.forEach((o,j)=>{if(i!=j){const dx=o[1]-s[1],dy=o[2]-s[2];P=clip(P,dx,dy,(dx*(o[1]+s[1])+dy*(o[2]+s[2]))/2)}});return P.map(p=>p.map(v=>v.toFixed(2)).join(',')).join(' ')});
+const w=PT.map((p,i)=>.5+fr(Math.sin((i+1)*12.9898)*43758.5453)*(p[0]=='Bojonegoro'?3:1)),sw=w.reduce((a,b)=>a+b,0);
+const D=PT.map((p,i)=>{let r=18+57*fr(Math.sin((i+3)*78.233)*12345.678);if(['Bojonegoro','Dander','Kapas','Baureno'].includes(p[0]))r+=15;return{k:p[0],x:p[1],y:p[2],u:Math.round(w[i]/sw*91751),r:Math.round(cl(r,12,88))}});
+const SEK=['Semua sektor usaha','Perdagangan','Kuliner','Pertanian','Jasa','Kriya'];
+$('#sek').innerHTML=SEK.map((s,i)=>`<option value="${i}">${s}</option>`).join('');
+const rat=(i,s)=>s==0?D[i].r:Math.round(cl(D[i].r+(fr(Math.sin((i+1)*(s+1.7)*9.13)*999)-.5)*34,8,92));
+const tier=r=>r<45?'h':r<65?'m':'g';
+const COL={h:'#D0554B',m:'#E2B440',g:'#1F5FAE'},TXT={h:'#fff',m:'#12264D',g:'#fff'};
+let sel=D.findIndex(d=>d.k=='Bojonegoro');
+function drawMap(){const s=+$('#sek').value,f=$('#pri').value;
+ const order=D.map((_,i)=>i).sort((a,b)=>(a==sel)-(b==sel));
+ $('#map').innerHTML=order.map(i=>{const r=rat(i,s),t=tier(r),on=!f||f==t;return`<g style="opacity:${on?1:.18};transition:opacity .25s"><polygon class="cell${i==sel?' sel':''}" data-i="${i}" points="${CELLS[i]}" fill="${COL[t]}" tabindex="0" role="button" aria-label="${D[i].k}, ${r} persen"/><text class="lbl" x="${D[i].x}" y="${D[i].y}" fill="${TXT[t]}" stroke="${COL[t]}">${D[i].k}</text></g>`}).join('');
+ document.querySelectorAll('.cell').forEach(c=>{c.onclick=()=>{sel=+c.dataset.i;drawMap()};c.onkeydown=e=>{if(e.key=='Enter'||e.key==' '){e.preventDefault();c.onclick()}}});
+ const n={h:0,m:0,g:0};D.forEach((_,i)=>n[tier(rat(i,s))]++);
+ $('#sum').innerHTML=[['h','Prioritas tinggi'],['m','Prioritas sedang'],['g','Cakupan tinggi']].map(([k,l])=>`<div class="rw"><span>${l}</span><b>${n[k]} kecamatan</b></div><div class="bar"><i style="width:${n[k]/28*100}%;background:${COL[k]}"></i></div>`).join('');
+ const r=rat(sel,s),t=tier(r),m=Math.round(D[sel].u*r/100);
+ const txt={h:'Cakupan simulasi rendah. Prioritaskan pendampingan pasar dan bantu pedagang membuka QRIS.',m:'Cakupan simulasi menengah. Dorong pemakaian berulang, bukan hanya pembukaan akun.',g:'Cakupan simulasi relatif tinggi. Pertahankan penggunaan dan bantu UMKM memperluas pemasaran digital.'}[t];
+ const lbl={h:['p-r','Prioritas tinggi'],m:['p-a','Prioritas sedang'],g:['p-g','Cakupan tinggi']}[t];
+ $('#detail').innerHTML=`<div class="head"><div><span class="pill ${lbl[0]}">${lbl[1]}</span><h3 style="font-size:20px;margin:8px 0 4px">Kecamatan ${D[sel].k}</h3><p class="d" style="max-width:34em">${txt}</p></div><div style="text-align:right"><div class="big">${r}%</div><div class="d">cakupan QRIS*</div></div></div>
+ <div class="bar"><i style="width:${r}%;background:${COL[t]}"></i></div><div class="rw"><span>Jumlah usaha (${SEK[s].toLowerCase()})</span><b>${fmt(D[sel].u)}</b></div><div class="rw"><span>Merchant QRIS aktif</span><b>${fmt(m)}</b></div><p class="note">*Rasio merchant QRIS aktif terhadap jumlah usaha, data simulasi.</p>`}
+$('#sek').onchange=drawMap;$('#pri').onchange=drawMap;
+
+/* Indikator dampak (terhubung ke Evaluasi) */
+function drawImp(){const a=+$('#e1').value,b=+$('#e2').value,c=+$('#e3').value;
+ $('#imp').innerHTML=[['Penggunaan QRIS berkelanjutan',c,70,'70%',COL.g],['UMKM ikut promosi digital',b,50,'50',COL.m],['UMKM didampingi (data awal-akhir terukur)',a,100,'100','#2E8B6F']].map(([l,v,t,tt,col])=>`<div class="rw"><span>${l}</span><b>Target ${tt}</b></div><div class="bar"><i style="width:${Math.min(v/t,1)*100}%;background:${col}"></i></div>`).join('')}
+
+/* Pasar */
+const P0=[['Bu Sri','Sayur',1],['Pak Hadi','Ikan segar',0],['Bu Lastri','Jajan pasar',0],['Mas Dimas','Kopi &amp; es',1],['Bu Wati','Pakaian',0],['Pak Karto','Bumbu',0]];
+let P;const rs=()=>P=P0.map(p=>({n:p[0],j:p[1],q:!!p[2],paid:false}));rs();
+function drawP(){$('#traders').innerHTML=P.map((p,i)=>`<div class="trader"><div><b>${p.n}</b> <span class="pill ${p.q?'p-g':'p-a'}">${p.q?'QRIS aktif':'Tunai'}</span><small>${p.j} · retribusi Rp3.000</small></div><div class="acts">${p.paid?'<span class="pill p-g">Lunas via QRIS</span>':`<button class="btn" data-pay="${i}">Bayar via QRIS</button>`}${!p.q?`<button class="btn sec" data-q="${i}">Bantu aktifkan QRIS</button>`:''}</div></div>`).join('');
+ document.querySelectorAll('[data-pay]').forEach(b=>b.onclick=()=>{P[+b.dataset.pay].paid=true;toast('Retribusi tercatat digital');drawP()});
+ document.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{P[+b.dataset.q].q=true;toast('QRIS aktif. Pembeli kini bisa bayar non-tunai');drawP()});
+ const a=P.filter(p=>p.paid).length,q=P.filter(p=>p.q).length;$('#m1').textContent=a;$('#m2').textContent=q;$('#b1').style.width=a/6*100+'%';$('#b2').style.width=q/6*100+'%'}
+$('#rst').onclick=()=>{rs();drawP()};
+
+/* KUR */
+function drawK(){const m=+$('#mo').value,c=$('#cs').checked,u=$('#un').checked;$('#mov').textContent=m;const s2=m>=6,s3=s2&&c&&u;
+ const S=[['1','Bayar &amp; didampingi','Retribusi lewat QRIS dan pendampingan membuka QRIS. Belum ada utang di tahap ini.',1],['2','Catatan transaksi terbentuk',`Riwayat QRIS terkumpul ${Math.min(m,6)} dari 6 bulan.<div class="bar"><i style="width:${Math.min(m,6)/6*100}%;background:var(--blue)"></i></div>`,s2],['3','Dirujuk ke bank penyalur KUR','Rujukan atas persetujuan pelaku usaha. Bank yang memutuskan kredit.',s3]];
+ $('#steps').innerHTML=S.map(s=>`<div class="step${s[3]?' on':''}"><div class="dot">${s[3]?'✓':s[0]}</div><div><b>${s[1]}</b><p>${s[2]}</p></div></div>`).join('');
+ const miss=[!s2&&'catatan transaksi belum cukup',!c&&'belum ada persetujuan',!u&&'pemahaman kewajiban belum dikonfirmasi'].filter(Boolean),k=$('#kstat');
+ k.style.background=s3?'var(--sky)':'var(--gold-l)';k.style.color=s3?'var(--blue)':'#6B4E0A';
+ k.innerHTML=s3?'<b>Siap dirujuk.</b> Data hanya dibagikan ke bank penyalur; keputusan kredit tetap di bank.':'<b>Belum dirujuk:</b> '+miss.join(', ')+'.'}
+['mo','cs','un'].forEach(i=>$('#'+i).oninput=drawK);
+
+/* Digital Market */
+const IC={Kuliner:'M6 3v8a3 3 0 006 0V3M9 3v18M18 3c-2 2-3 5-3 8h3v10',Kriya:'M12 3l8 4v10l-8 4-8-4V7zM12 12l8-5M12 12v9M12 12L4 7',Pertanian:'M12 21V9M12 9c0-4 3-6 7-6 0 4-3 6-7 6zM12 13c0-3-2-5-6-5 0 3 2 5 6 5z'};
+const PR=[['Madu hutan jati','Pertanian',65000,'Kec. Margomulyo'],['Keripik singkong','Kuliner',18000,'Kec. Kedungadem'],['Batik Jonegoroan','Kriya',185000,'Kec. Bojonegoro'],['Kopi lokal sangrai','Kuliner',42000,'Kec. Dander'],['Anyaman bambu','Kriya',55000,'Kec. Temayang'],['Beras organik 5 kg','Pertanian',78000,'Kec. Kapas']];
+const CT=['Semua',...Object.keys(IC)];let cat='Semua',cart=[];
+function drawM(){$('#cats').innerHTML=CT.map(c=>`<button class="chip" aria-pressed="${c==cat}" data-c="${c}">${c}</button>`).join('');
+ document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{cat=b.dataset.c;drawM()});
+ $('#prods').innerHTML=PR.map((p,i)=>[p,i]).filter(([p])=>cat=='Semua'||p[1]==cat).map(([p,i])=>`<div class="prod"><div class="thumb"><svg viewBox="0 0 24 24" fill="none" stroke="#1F5FAE" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="${IC[p[1]]}"/></svg></div><div class="b"><b>${p[0]}</b><small>${p[3]}</small><span class="pill p-g" style="align-self:flex-start;margin-top:4px">Terima QRIS</span><div class="pr">Rp${fmt(p[2])}</div><button class="btn" data-a="${i}" style="margin-top:8px">Tambah ke pesanan</button></div></div>`).join('');
+ document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{cart.push(+b.dataset.a);toast(PR[b.dataset.a][0]+' masuk pesanan');$('#cartb').textContent='Keranjang pesanan: '+cart.length})}
+$('#cartb').onclick=()=>{if(!cart.length)return toast('Belum ada produk dipilih');toast(cart.length+' produk, total Rp'+fmt(cart.reduce((a,i)=>a+PR[i][2],0))+'. Bayar lewat QRIS penjual.');cart=[];$('#cartb').textContent='Keranjang pesanan: 0'};
+
+/* Evaluasi */
+function drawE(){const a=+$('#e1').value,b=+$('#e2').value,c=+$('#e3').value;$('#e1v').textContent=a;$('#e2v').textContent=b;$('#e3v').textContent=c;
+ const f=(ok,t)=>`<span class="pill ${ok?'p-g':'p-a'}">${ok?'Tercapai':'Belum'} · ${t}</span>`;
+ $('#s1').innerHTML=f(a>=100,a);$('#s2').innerHTML=f(b>=50,b);$('#s3').innerHTML=f(c>=70,c+'%');
+ $('#bars').innerHTML=[1,2,3,4,5,6].map(m=>{const n=Math.round(a*(1-(1-c/100)*(m-1)/5));return`<div><b style="color:var(--ink)">${n}</b><i style="height:${a?n/a*80:0}%"></i>Bln ${m}</div>`}).join('');drawImp()}
+['e1','e2','e3'].forEach(i=>$('#'+i).oninput=drawE);
+drawMap();drawP();drawK();drawM();drawE();
+</script>
+</body>
+</html>
